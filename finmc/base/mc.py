@@ -8,6 +8,8 @@ from abc import ABC, abstractmethod
 class MCBase(ABC):
     """Class to maintain the state of a single asset MC process."""
 
+    stats: dict = {}
+
     def set_stat(self, key: str, val):
         self.stats[key] = val
 
