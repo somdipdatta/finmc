@@ -10,6 +10,8 @@ class Discounter:
 
     def __init__(self, discount_data):
         data_type, data = discount_data
+        if data[0, 0] > 0.0:
+            data = np.insert(data, [0], [0.0, 0.0], axis=0)
         if data_type == "LOG_DISCOUNTS":
             # the columns are times and log discounts
             times = data[:, 0]
@@ -63,9 +65,7 @@ def discounter_from_dataset(dataset):
 
 def flat_discount(rate, max_time):
     """Create a flat discount curve."""
-    times = np.array([0.0, max_time])
-    term_rates = np.array([rate, rate])
-    return ("ZERO_RATES", np.column_stack((times, term_rates)))
+    return ("ZERO_RATES", np.array([[max_time, rate]]))
 
 
 def flat_fwds(spot, rate, div_rate, max_time):

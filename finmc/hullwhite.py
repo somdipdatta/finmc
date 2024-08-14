@@ -5,12 +5,12 @@ from math import sqrt
 import numpy as np
 from numpy.random import SFC64, Generator
 
-from finmc.base.mc import MCBase
+from finmc.base.mc import MCFixedStep
 from finmc.base.utils import Discounter
 
 
 # Define a class for the state of a single asset HullWhite MC process
-class HullWhiteMC(MCBase):
+class HullWhiteMC(MCFixedStep):
     def __init__(self, dataset):
         self.shape = dataset["MC"]["PATHS"]
         self.dt = dataset["MC"]["TIMESTEP"]
@@ -33,13 +33,7 @@ class HullWhiteMC(MCBase):
 
         self.cur_time = 0
 
-    def advance(self, new_time):
-        while new_time > self.cur_time + self.dt:
-            self._advance(self.cur_time + self.dt)
-        if new_time > self.cur_time + 1e-10:
-            self._advance(new_time)
-
-    def _advance(self, new_time):
+    def advance_step(self, new_time):
         """Update x_vec, v_vec in place when we move simulation by time dt."""
         dt = new_time - self.cur_time
         if dt < 1e-10:

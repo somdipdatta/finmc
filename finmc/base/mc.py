@@ -19,4 +19,19 @@ class MCBase(ABC):
         return None
 
     @abstractmethod
-    def advance(self, new_time: float): ...
+    def advance(self, new_time: float):
+        """Advance the model to a new time. It might require multiple time steps."""
+        ...
+
+
+class MCFixedStep(ABC):
+    def advance(self, new_time):
+        while new_time > self.cur_time + self.dt:
+            self.advance_step(self.cur_time + self.dt)
+        if new_time > self.cur_time + 1e-10:
+            self.advance_step(new_time)
+
+    @abstractmethod
+    def advance_step(self, new_time: float):
+        """Advance the model with a single time step."""
+        ...

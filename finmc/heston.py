@@ -5,12 +5,12 @@ from math import sqrt
 import numpy as np
 from numpy.random import SFC64, Generator
 
-from finmc.base.mc import MCBase
+from finmc.base.mc import MCFixedStep
 from finmc.base.utils import Forwards
 
 
 # Define a class for the state of a single asset Heston MC process
-class HestonMC(MCBase):
+class HestonMC(MCFixedStep):
     def __init__(self, dataset):
         self.shape = dataset["MC"]["PATHS"]
         assert self.shape % 2 == 0, "Number of paths must be even"
@@ -47,13 +47,7 @@ class HestonMC(MCBase):
         self.sv_vec = np.empty(self.shape, dtype=np.float64)
         self.cur_time = 0
 
-    def advance(self, new_time):
-        while new_time > self.cur_time + self.dt:
-            self._advance(self.cur_time + self.dt)
-        if new_time > self.cur_time + 1e-10:
-            self._advance(new_time)
-
-    def _advance(self, new_time):
+    def advance_step(self, new_time):
         """Update x_vec, v_vec in place when we move simulation by time dt."""
         dt = new_time - self.cur_time
 

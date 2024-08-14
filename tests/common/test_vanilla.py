@@ -40,7 +40,6 @@ def test_call(data, maturity, strike_x):
     strike = strike_x * spot
 
     model = model_cls(dataset)
-    asset_name = dataset["BS"]["ASSET"]
 
     maturity_yrs = maturity / 12
 
