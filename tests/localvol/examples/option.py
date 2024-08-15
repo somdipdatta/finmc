@@ -1,6 +1,6 @@
 # Description: Run MSFD and LVMC models with a vanilla option contract.
-from tests.blackscholes.dataset import data_lvmc_fn, data_lvmc_grid
-from tests.blackscholes.helpers import price_vanilla_option_sim
+from tests.localvol.dataset import data_lvmc_fn, data_lvmc_grid
+from tests.localvol.helpers import opt_price_sim
 
 
 def run_model(type="grid"):
@@ -18,7 +18,7 @@ def run_model(type="grid"):
 
     # get price from timetable
     model = model_cls(dataset)
-    price = price_vanilla_option_sim(
+    price = opt_price_sim(
         strike,
         1 / 12,
         "Call",

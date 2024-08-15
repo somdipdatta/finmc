@@ -2,17 +2,19 @@
 Testing Vanilla Option for all Black Scholes models.
 """
 
+import numpy as np
 import pytest
 from pytest import approx
 
+from finmc.base.utils import Discounter, Forwards
 from tests.localvol.dataset import (
     data_lvmc,
     data_lvmc_fn,
     data_lvmc_grid,
 )
 from tests.localvol.helpers import (
-    price_vanilla_opt,
-    price_vanilla_option_sim,
+    opt_price_bs,
+    opt_price_sim,
 )
 
 
@@ -43,7 +45,7 @@ def test_call(data, maturity, strike_x):
 
     maturity_yrs = maturity / 12
 
-    price = price_vanilla_option_sim(
+    price = opt_price_sim(
         strike,
         maturity_yrs,
         "Call",
@@ -53,12 +55,25 @@ def test_call(data, maturity, strike_x):
     )
 
     # get closed form price
-    expected_price, _ = price_vanilla_opt(
+    discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
+    df = discounter.discount(maturity_yrs)
+
+    asset_fwds = Forwards(dataset["ASSETS"][asset_name])
+    F = asset_fwds.forward(maturity_yrs)
+
+    sigma = dataset["BS"]["VOL"]
+    if callable(sigma):
+        spot = asset_fwds.forward(0)
+        x = np.log(strike / spot)
+        sigma = float(sigma((maturity_yrs, x)))
+
+    expected_price, _ = opt_price_bs(
         strike,
         maturity_yrs,
         "Call",
-        asset_name,
-        dataset,
+        F=F,
+        df=df,
+        sigma=sigma,
     )
     error = (price - expected_price) / spot
     # TODO feat: revisit the ATM Options at 0.10 maturity where error is high.

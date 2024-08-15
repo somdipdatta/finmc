@@ -4,7 +4,7 @@ import numpy as np
 from numpy.random import SFC64, Generator
 
 from finmc.base.mc import MCFixedStep
-from finmc.base.utils import Forwards
+from finmc.base.utils import Discounter, Forwards
 
 
 # Define a class for the state of a single asset BS Local Vol MC process
@@ -17,6 +17,7 @@ class LVMC(MCFixedStep):
         self.spot = self.asset_fwd.forward(0)
         self.vol = dataset["LV"]["VOL"]
         self.logspot = np.log(self.spot)
+        self.discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
 
         # Initialize rng and any arrays
         self.rng = Generator(SFC64(dataset["MC"]["SEED"]))
@@ -57,8 +58,9 @@ class LVMC(MCFixedStep):
         self.cur_time = new_time
 
     def get_value(self, unit):
-        """Return the value of the modeled asset at the current time.
-        otherwise return none."""
-
+        """Return the value of the modeled asset at the current time."""
         if unit == self.asset:
             return self.spot * np.exp(self.x_vec)
+
+    def get_df(self):
+        return self.discounter.discount(self.cur_time)

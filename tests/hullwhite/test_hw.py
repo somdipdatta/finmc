@@ -1,9 +1,6 @@
 # Description: Tests for a custom MC Hull White model with ZCB.
 
-from datetime import datetime
-
 import numpy as np
-import pytest
 
 from finmc.hullwhite import HullWhiteMC
 
@@ -13,7 +10,6 @@ def data_hwmc():
 
     # define dataset
     # first define the discount curve
-    pricing_dt = datetime(2023, 12, 31)
     times = np.array([0.0, 1.0, 2.0, 5.0])
     term_rates = np.array([0.04, 0.04, 0.045, 0.05])
     discount_data = ("ZERO_RATES", np.column_stack((times, term_rates)))
@@ -33,8 +29,4 @@ def data_hwmc():
         },
     }
 
-    return HullWhiteMC, dataset, {"pricing_dt": pricing_dt}
-
-
-if __name__ == "__main__":
-    pytest.main([__file__])
+    return HullWhiteMC, dataset, {}

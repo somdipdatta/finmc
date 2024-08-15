@@ -24,9 +24,10 @@ class HullWhiteMC(MCFixedStep):
         self.meanrev = dataset["HW"]["MEANREV"]
         self.vol = dataset["HW"]["VOL"]
 
-        # Initialize the arrays
-        self.x_vec = np.zeros(self.shape)  # processes x
-        self.r_vec = np.zeros(self.shape)  # processes r (short rate)
+        # Initialize the arrays for the processes
+        self.x_vec = np.zeros(self.shape, dtype=np.float64)  # x
+        self.r_vec = np.zeros(self.shape, dtype=np.float64)  # r (short rate)
+        self.df_vec = np.ones(self.shape, dtype=np.float64)  # discount factors
 
         # We will reduce time spent in memory allocation by creating a tmp arrays
         self.tmp_vec = np.empty(self.shape, dtype=np.float64)
@@ -36,8 +37,6 @@ class HullWhiteMC(MCFixedStep):
     def advance_step(self, new_time):
         """Update x_vec, v_vec in place when we move simulation by time dt."""
         dt = new_time - self.cur_time
-        if dt < 1e-10:
-            return 1
 
         sqrtdt = sqrt(dt)
 
@@ -61,4 +60,9 @@ class HullWhiteMC(MCFixedStep):
 
         self.cur_time = new_time
 
-        return np.exp(-self.r_vec * dt)  # return the discount factor
+        np.multiply(self.df_vec, np.exp(-self.r_vec * dt), out=self.df_vec)
+        # np.exp(-self.r_vec * dt)  # return the discount factor
+
+    def get_df(self):
+        """Return the discount factor at the current time."""
+        return self.df_vec  # discount factor

@@ -1,7 +1,7 @@
 # Description: Run Heston MC model with a vanilla option contract.
 
 from tests.heston.dataset import data_heston_kruse
-from tests.localvol.helpers import price_vanilla_option_sim
+from tests.localvol.helpers import opt_price_sim
 
 
 def run_model():
@@ -12,7 +12,7 @@ def run_model():
     # Create an option timetable with 1 month maturity
 
     model = model_cls(dataset)
-    price = price_vanilla_option_sim(
+    price = opt_price_sim(
         100,
         1 / 12,
         "Call",

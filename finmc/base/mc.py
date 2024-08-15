@@ -18,6 +18,10 @@ class MCBase(ABC):
         if this asset is handled by the model, otherwise return None."""
         return None
 
+    def get_df(self):
+        """Return the discount factor at the current time."""
+        ...
+
     @abstractmethod
     def advance(self, new_time: float):
         """Advance the model to a new time. It might require multiple time steps."""

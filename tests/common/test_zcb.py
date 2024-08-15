@@ -5,7 +5,7 @@ Testing ZCB for all models.
 import pytest
 from pytest import approx
 
-from finmc.base.utils import discounter_from_dataset
+from finmc.base.utils import Discounter
 from tests.hullwhite.test_hw import data_hwmc
 from tests.localvol.dataset import data_lvmc
 
@@ -23,17 +23,17 @@ def data(request):
 def test_zcb(data):
     """Test the price of a zero coupon bond."""
 
-    model_cls, dataset, other = data
+    model_cls, dataset, _ = data
 
     for maturity in [0.1, 1.0, 3.0]:  # months
+        # Simulated Price
         model = model_cls(dataset)
         model.advance(maturity)
+        price = model.get_df().mean()
 
-        # get closed form price
-        discounter = discounter_from_dataset(dataset)
+        # Get closed form price
+        discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
         expected_price = discounter.discount(maturity)
-
-        price = expected_price  # trivial for now, modify later
 
         error = price - expected_price
         contract = f"ZCB {maturity:4.2f}"

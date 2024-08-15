@@ -6,7 +6,7 @@ import numpy as np
 from numpy.random import SFC64, Generator
 
 from finmc.base.mc import MCFixedStep
-from finmc.base.utils import Forwards
+from finmc.base.utils import Discounter, Forwards
 
 
 # Define a class for the state of a single asset Heston MC process
@@ -23,10 +23,11 @@ class HestonMC(MCFixedStep):
         self.asset = dataset["HESTON"]["ASSET"]
         self.asset_fwd = Forwards(dataset["ASSETS"][self.asset])
         self.spot = self.asset_fwd.forward(0)
+        self.discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
 
         self.heston_params = (
             dataset["HESTON"]["LONG_VAR"],
-            dataset["HESTON"]["VOL_OF_VAR"],
+            dataset["HESTON"]["VOL_OF_VOL"],
             dataset["HESTON"]["MEANREV"],
             dataset["HESTON"]["CORRELATION"],
         )
@@ -121,5 +122,6 @@ class HestonMC(MCFixedStep):
         """Return the value of the unit at the current time."""
         if unit == self.asset:
             return self.spot * np.exp(self.x_vec)
-        else:
-            return None
+
+    def get_df(self):
+        return self.discounter.discount(self.cur_time)

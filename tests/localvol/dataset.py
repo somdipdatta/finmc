@@ -1,7 +1,5 @@
 # Description: datasets for the LV MC and BS FD model.
 
-from datetime import datetime
-
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
@@ -43,8 +41,6 @@ def data_lvmc():
 
     # define dataset
     # first define the discount curve and forward curve
-    pricing_dt = datetime(2023, 12, 31)
-
     times = np.array([0.0, 1.0, 2.0, 5.0])
     term_rates = np.array([0.04, 0.04, 0.045, 0.05])
     div_rate = 0.01
@@ -73,7 +69,7 @@ def data_lvmc():
         },
     }
 
-    return LVMC, dataset, {"spot": spot, "pricing_dt": pricing_dt}
+    return LVMC, dataset, {"spot": spot}
 
 
 def data_lvmc_grid():

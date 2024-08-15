@@ -1,20 +1,14 @@
 # Description: datasets for the Heston model.
 
-
-from datetime import datetime
-
 from finmc.base.utils import flat_discount, flat_fwds
 from finmc.heston import HestonMC
 
 
 def data_heston_kruse():
-    spot = 100  # spot doesn't matter, payoff is on returns
-
-    # define dataset
+    """Define the dataset from Kruse."""
     asset_name = "EQ"
     spot = 100
     rate = 0.0
-    pricing_dt = datetime(2023, 12, 31)
 
     dataset = {
         "MC": {
@@ -31,7 +25,7 @@ def data_heston_kruse():
             "ASSET": asset_name,
             "INITIAL_VAR": 0.09,
             "LONG_VAR": 0.06,
-            "VOL_OF_VAR": 0.65,
+            "VOL_OF_VOL": 0.65,
             "MEANREV": 4.0,
             "CORRELATION": -0.90,
         },
@@ -40,5 +34,5 @@ def data_heston_kruse():
     return (
         HestonMC,
         dataset,
-        {"spot": spot, "rate": rate, "pricing_dt": pricing_dt},
+        {"spot": spot, "rate": rate},
     )

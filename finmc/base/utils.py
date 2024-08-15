@@ -58,11 +58,6 @@ class Forwards:
         return np.exp(self.log_forward_fn(t))
 
 
-def discounter_from_dataset(dataset):
-    """Return a discounter from a dataset."""
-    return Discounter(dataset["ASSETS"][dataset["BASE"]])
-
-
 def flat_discount(rate, max_time):
     """Create a flat discount curve."""
     return ("ZERO_RATES", np.array([[max_time, rate]]))

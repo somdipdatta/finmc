@@ -3,9 +3,10 @@
 import pytest
 from pytest import approx
 
-from tests.localvol.helpers import price_vanilla_option_sim
+from finmc.base.utils import Discounter, Forwards
 from tests.heston.dataset import data_heston_kruse
-from tests.heston.helpers import price_vanilla_call
+from tests.heston.helpers import opt_price_heston
+from tests.localvol.helpers import opt_price_sim
 
 
 @pytest.fixture(scope="module")
@@ -21,12 +22,12 @@ def test_call(data, maturity, strike_x):
     model_cls, dataset, other = data
     spot = other["spot"]
     asset_name = dataset["HESTON"]["ASSET"]
-
+    ccy = dataset["BASE"]
     strike = strike_x * spot
 
     model = model_cls(dataset)
 
-    price = price_vanilla_option_sim(
+    price = opt_price_sim(
         strike,
         maturity,
         "Call",
@@ -36,11 +37,19 @@ def test_call(data, maturity, strike_x):
     )
 
     # get closed form price
-    expected_price, _ = price_vanilla_call(
+    discounter = Discounter(dataset["ASSETS"][ccy])
+    asset_fwds = Forwards(dataset["ASSETS"][asset_name])
+    r = discounter.rate(maturity)
+    S0 = asset_fwds.forward(0)
+    mu = asset_fwds.rate(maturity)
+
+    expected_price, _ = opt_price_heston(
         strike,
         maturity,
-        asset_name,
-        dataset,
+        S0=S0,
+        r=r,
+        mu=mu,
+        heston_params=dataset["HESTON"],
     )
     error = (price - expected_price) / spot
     contract = f"Call {maturity:4.2f} {strike:6.0f}"

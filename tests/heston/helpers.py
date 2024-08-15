@@ -8,8 +8,6 @@ from functools import partial
 import numpy as np
 from scipy.integrate import quad
 
-from finmc.base.utils import Forwards, discounter_from_dataset
-
 
 def cf_heston(u, t, v0, mu, kappa, theta, sigma, rho):
     """
@@ -62,32 +60,26 @@ def Q2(k, cf, right_lim):
     return 1 / 2 + 1 / np.pi * quad(integrand, 1e-15, right_lim, limit=2000)[0]
 
 
-def price_vanilla_call(
+def opt_price_heston(
     K,  # strike
     T,  # option maturity in years
-    asset_name,
-    dataset,
+    S0,  # initial spot
+    r,  # risk free rate
+    mu,  # stock drift
+    heston_params,
 ):
     """Calculate the price of a Vanilla European Option using Heston Model characteristic function."""
     # TODO feat: handle time dependent params.
 
-    discounter = discounter_from_dataset(dataset)
-    asset_fwds = Forwards(dataset["ASSETS"][asset_name])
-    heston_data = dataset["HESTON"]
-
-    r = discounter.rate(T)
-    S0 = asset_fwds.forward(0)  # current Spot.
-    mu = asset_fwds.rate(T)
-
     cf_reduced = partial(
         cf_heston,
         t=T,
-        v0=heston_data["INITIAL_VAR"],
+        v0=heston_params["INITIAL_VAR"],
         mu=mu,
-        theta=heston_data["LONG_VAR"],
-        sigma=heston_data["VOL_OF_VAR"],
-        kappa=heston_data["MEANREV"],
-        rho=heston_data["CORRELATION"],
+        theta=heston_params["LONG_VAR"],
+        sigma=heston_params["VOL_OF_VOL"],
+        kappa=heston_params["MEANREV"],
+        rho=heston_params["CORRELATION"],
     )
     limit_max = 1000
     k = np.log(K / S0)  # log strike
@@ -95,8 +87,3 @@ def price_vanilla_call(
         k, cf_reduced, limit_max
     ) - K * np.exp(-r * T) * Q2(k, cf_reduced, limit_max)
     return price, {}
-
-
-# TODO feat. a forward starting option can be evaluated using cf as in
-# 10.1007/s00780-004-0146-3
-# It requires a double integral, and approximation of a Bessel function.
