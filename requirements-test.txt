@@ -11,6 +11,8 @@ mkdocstrings
 mkdocstrings-python
 mkdocs-material
 line-profiler
+plotly
+nbformat
 pandas
 numpy
 scipy
