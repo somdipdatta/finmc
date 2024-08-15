@@ -60,5 +60,3 @@ def digital_price_bs(
     if apply_discounter:
         price = price * df
     return price, {}
-
-
