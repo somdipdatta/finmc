@@ -8,8 +8,8 @@ from finmc.calc.bs import find_vol
 
 
 def iv_surface_sim(
-    strikes: list,
-    expirations: list,  # in years, increasing order
+    strikes,
+    expirations,  # in years, increasing order
     asset_name: str,
     model,
 ) -> np.ndarray:
