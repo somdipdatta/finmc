@@ -5,8 +5,8 @@ from math import sqrt
 import numpy as np
 from numpy.random import SFC64, Generator
 
-from finmc.base.mc import MCFixedStep
-from finmc.base.utils import Discounter
+from finmc.models.base import MCFixedStep
+from finmc.utils.assets import Discounter
 
 
 # Define a class for the state of a single asset HullWhite MC process

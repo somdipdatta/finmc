@@ -2,7 +2,7 @@
 
 from line_profiler import LineProfiler
 
-from finmc.heston import (
+from finmc.models.heston import (
     HestonMC,
 )
 from tests.heston.examples.option import run_model  # noqa: F401

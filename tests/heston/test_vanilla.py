@@ -3,10 +3,10 @@
 import pytest
 from pytest import approx
 
-from finmc.base.utils import Discounter, Forwards
+from finmc.calc.option import opt_price_sim
+from finmc.utils.assets import Discounter, Forwards
 from tests.heston.dataset import data_heston_kruse
 from tests.heston.helpers import opt_price_heston
-from tests.localvol.helpers import opt_price_sim
 
 
 @pytest.fixture(scope="module")
@@ -32,7 +32,6 @@ def test_call(data, maturity, strike_x):
         maturity,
         "Call",
         asset_name,
-        dataset,
         model,
     )
 

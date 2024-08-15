@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 from pytest import approx
 
-from finmc.base.utils import Discounter
+from finmc.utils.assets import Discounter
 
 
 def test_discounts():

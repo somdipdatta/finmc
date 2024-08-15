@@ -62,22 +62,3 @@ def digital_price_bs(
     return price, {}
 
 
-def opt_price_sim(
-    strike,
-    maturity,  # in years
-    option_type,  # "Call" or "Put"
-    asset_name,
-    dataset,
-    model,
-):
-    """Calculate the price of a Vanilla European Option using MC Simulation."""
-
-    model.advance(maturity)
-    expiration_spots = model.get_value(asset_name)
-    df = model.get_df()
-
-    if option_type == "Call":
-        price = np.maximum(expiration_spots - strike, 0).mean() * df
-    else:
-        price = np.maximum(strike - expiration_spots, 0).mean() * df
-    return price

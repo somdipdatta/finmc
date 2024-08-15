@@ -5,7 +5,7 @@ Testing ZCB for all models.
 import pytest
 from pytest import approx
 
-from finmc.base.utils import Discounter
+from finmc.utils.assets import Discounter
 from tests.hullwhite.test_hw import data_hwmc
 from tests.localvol.dataset import data_lvmc
 

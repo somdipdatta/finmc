@@ -3,7 +3,7 @@
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
-from finmc.localvol import LVMC
+from finmc.models.localvol import LVMC
 
 
 # Description: datasets for the LVMC model.
@@ -62,7 +62,7 @@ def data_lvmc():
         "BS": {
             "ASSET": "SPX",
             "VOL": 0.3,
-        },
+        },  # For closed form evaluation
         "LV": {
             "ASSET": "SPX",
             "VOL": 0.3,

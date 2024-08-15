@@ -1,7 +1,7 @@
 # Description: Run Heston MC model with a vanilla option contract.
 
+from finmc.calc.option import opt_price_sim
 from tests.heston.dataset import data_heston_kruse
-from tests.localvol.helpers import opt_price_sim
 
 
 def run_model():
@@ -17,7 +17,6 @@ def run_model():
         1 / 12,
         "Call",
         "EQ",
-        dataset,
         model,
     )
 

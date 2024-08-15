@@ -3,8 +3,8 @@ from math import sqrt
 import numpy as np
 from numpy.random import SFC64, Generator
 
-from finmc.base.mc import MCFixedStep
-from finmc.base.utils import Discounter, Forwards
+from finmc.models.base import MCFixedStep
+from finmc.utils.assets import Discounter, Forwards
 
 
 # Define a class for the state of a single asset BS Local Vol MC process

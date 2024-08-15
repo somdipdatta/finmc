@@ -1,7 +1,7 @@
 # Description: datasets for the Heston model.
 
-from finmc.base.utils import flat_discount, flat_fwds
-from finmc.heston import HestonMC
+from finmc.models.heston import HestonMC
+from finmc.utils.assets import flat_discount, flat_fwds
 
 
 def data_heston_kruse():

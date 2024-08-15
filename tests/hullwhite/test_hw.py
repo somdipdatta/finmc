@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from finmc.hullwhite import HullWhiteMC
+from finmc.models.hullwhite import HullWhiteMC
 
 
 def data_hwmc():

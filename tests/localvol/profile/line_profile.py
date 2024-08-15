@@ -2,7 +2,7 @@
 
 from line_profiler import LineProfiler
 
-from finmc.localvol import LVMC
+from finmc.models.localvol import LVMC
 from tests.blackscholes.examples.option import run_model, volfn  # noqa: F401
 
 if __name__ == "__main__":

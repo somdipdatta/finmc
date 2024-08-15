@@ -6,16 +6,14 @@ import numpy as np
 import pytest
 from pytest import approx
 
-from finmc.base.utils import Discounter, Forwards
+from finmc.calc.option import opt_price_sim
+from finmc.utils.assets import Discounter, Forwards
 from tests.localvol.dataset import (
     data_lvmc,
     data_lvmc_fn,
     data_lvmc_grid,
 )
-from tests.localvol.helpers import (
-    opt_price_bs,
-    opt_price_sim,
-)
+from tests.localvol.helpers import opt_price_bs
 
 
 # datasets for all models that can price a vanilla option.
@@ -50,7 +48,6 @@ def test_call(data, maturity, strike_x):
         maturity_yrs,
         "Call",
         asset_name,
-        dataset,
         model,
     )
 
