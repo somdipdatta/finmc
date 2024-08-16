@@ -48,11 +48,7 @@ if __name__ == "__main__":
 
     # create the dataset
     dataset = {
-        "MC": {
-            "PATHS": 100_000,
-            "TIMESTEP": 1 / 10,
-            "SEED": 1,
-        },
+        "MC": {"PATHS": 100_000, "TIMESTEP": 1 / 10},
         "BASE": "USD",
         "ASSETS": {
             "USD": ("ZERO_RATES", np.array([[1.0, 0.04]])),

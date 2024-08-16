@@ -13,7 +13,7 @@ from finmc.utils.assets import Discounter
 class HullWhiteMC(MCFixedStep):
     def __init__(self, dataset):
         self.shape = dataset["MC"]["PATHS"]
-        self.dt = dataset["MC"]["TIMESTEP"]
+        self.timestep = dataset["MC"]["TIMESTEP"]
 
         # create a random number generator
         self.rng = Generator(SFC64(dataset["MC"]["SEED"]))

@@ -20,12 +20,12 @@ class LVMC(MCFixedStep):
         self.discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
 
         # Initialize rng and any arrays
-        self.rng = Generator(SFC64(dataset["MC"]["SEED"]))
+        self.rng = Generator(SFC64(dataset["MC"].get("SEED")))
         self.x_vec = np.zeros(self.n)  # process x (log stock)
         self.dz_vec = np.empty(self.n, dtype=np.float64)
         self.tmp = np.empty(self.n, dtype=np.float64)
 
-        self.dt = dataset["MC"]["TIMESTEP"]
+        self.timestep = dataset["MC"]["TIMESTEP"]
 
         self.cur_time = 0
 

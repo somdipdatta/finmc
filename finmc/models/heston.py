@@ -15,7 +15,7 @@ class HestonMC(MCFixedStep):
         self.shape = dataset["MC"]["PATHS"]
         assert self.shape % 2 == 0, "Number of paths must be even"
         self.n = self.shape >> 1  # divide by 2
-        self.dt = dataset["MC"]["TIMESTEP"]
+        self.timestep = dataset["MC"]["TIMESTEP"]
 
         # create a random number generator
         self.rng = Generator(SFC64(dataset["MC"]["SEED"]))
