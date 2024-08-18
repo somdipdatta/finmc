@@ -41,8 +41,8 @@ def data_lvmc():
 
     # define dataset
     # first define the discount curve and forward curve
-    times = np.array([0.0, 1.0, 2.0, 5.0])
-    term_rates = np.array([0.04, 0.04, 0.045, 0.05])
+    times = np.array([0.0, 1.0, 2.0, 5.0, 10.0])
+    term_rates = np.array([0.04, 0.04, 0.045, 0.05, 0.05])
     div_rate = 0.01
     discount_data = ("ZERO_RATES", np.column_stack((times, term_rates)))
 

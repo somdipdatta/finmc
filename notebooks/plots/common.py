@@ -35,3 +35,30 @@ def plot_asset(
         )
     for sample in samples:
         ax.plot(times, sample, label="Sample Path")
+    ax.set_xlabel("Maturity (years)")
+    ax.set_ylabel(asset_name)
+    plt.show()
+
+
+if __name__ == "__main__":
+    from finmc.models.hullwhite import HullWhiteMC
+
+    discount_data = (
+        "ZERO_RATES",
+        np.array([[0.5, 0.05], [1.0, 0.04], [3, 0.04]]),
+    )
+
+    dataset = {
+        "MC": {"PATHS": 100_000, "TIMESTEP": 1 / 250, "SEED": 1},
+        "BASE": "USD",
+        "ASSETS": {"USD": discount_data},
+        "HW": {
+            "ASSET": "USD",
+            "MEANREV": 0.1,
+            "VOL": 0.03,
+        },
+    }
+    # create the model and plot the progression of short rate???
+    model = HullWhiteMC(dataset)
+    model.reset(dataset)
+    plot_asset(model, "r")

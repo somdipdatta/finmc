@@ -25,7 +25,7 @@ def test_zcb(data):
 
     model_cls, dataset, _ = data
 
-    for maturity in [0.1, 1.0, 3.0]:  # years
+    for maturity in [0.1, 1.0, 3.0, 10.0]:  # years
         # Simulated Price
         model = model_cls(dataset)
         model.advance(maturity)

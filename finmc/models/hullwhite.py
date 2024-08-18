@@ -28,6 +28,8 @@ class HullWhiteMC(MCFixedStep):
         self.x_vec = np.zeros(self.shape, dtype=np.float64)  # x
         self.r_vec = np.zeros(self.shape, dtype=np.float64)  # r (short rate)
         self.df_vec = np.ones(self.shape, dtype=np.float64)  # discount factors
+        fwd_rate = self.asset_fwd.rate(self.timestep, 0)
+        np.add(self.x_vec, fwd_rate, out=self.r_vec)
 
         # We will reduce time spent in memory allocation by creating a tmp arrays
         self.tmp_vec = np.empty(self.shape, dtype=np.float64)
