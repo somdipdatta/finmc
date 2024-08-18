@@ -14,6 +14,8 @@ def iv_surface_sim(
     model,
 ) -> np.ndarray:
     iv_mat = np.zeros((len(expirations), len(strikes)))
+    iv_atm = []
+    fwds = []
     for i, exp in enumerate(expirations):
         model.advance(exp)
         expiration_spots = model.get_value(asset_name)
@@ -38,7 +40,12 @@ def iv_surface_sim(
             for p, k, ic in zip(prices, strikes, is_call)
         ]
 
-    return iv_mat
+        # calculate atm vols
+        atm_call = np.maximum(expiration_spots - fwd, 0).mean()
+        # calculate implied vols and fwds
+        fwds.append(fwd)
+        iv_atm.append(find_vol(atm_call, fwd, fwd, exp, True))
+    return iv_mat, np.array(iv_atm), np.array(fwds)
 
 
 if __name__ == "__main__":
@@ -64,7 +71,7 @@ if __name__ == "__main__":
     model = LVMC(dataset)
     strikes = np.linspace(2900, 3100, 3)
     expirations = [1 / 12, 1 / 6, 1 / 4, 1 / 2, 1]
-    surface = iv_surface_sim(
+    surface, atm_vols, fwds = iv_surface_sim(
         strikes,
         expirations,
         asset_name="SPX",
@@ -73,3 +80,5 @@ if __name__ == "__main__":
     # print the surface as a DataFrame
     df = pd.DataFrame(surface, columns=strikes, index=expirations)
     print(f"surface:\n{df}")
+    print(f"atm_vols:\n{atm_vols}")
+    print(f"fwds:\n{fwds}")
