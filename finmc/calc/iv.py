@@ -12,7 +12,7 @@ def iv_surface_sim(
     expirations,  # in years, increasing order
     asset_name: str,
     model,
-) -> np.ndarray:
+):
     iv_mat = np.zeros((len(expirations), len(strikes)))
     iv_atm = []
     fwds = []
