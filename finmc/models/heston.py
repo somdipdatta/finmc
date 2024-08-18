@@ -11,7 +11,7 @@ from finmc.utils.assets import Discounter, Forwards
 
 # Define a class for the state of a single asset Heston MC process
 class HestonMC(MCFixedStep):
-    def __init__(self, dataset):
+    def reset(self, dataset):
         self.shape = dataset["MC"]["PATHS"]
         assert self.shape % 2 == 0, "Number of paths must be even"
         self.n = self.shape >> 1  # divide by 2

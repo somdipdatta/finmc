@@ -38,11 +38,9 @@ def test_call(data, maturity, strike_x):
     asset_name = dataset["BS"]["ASSET"]
 
     strike = strike_x * spot
-
-    model = model_cls(dataset)
-
     maturity_yrs = maturity / 12
 
+    model = model_cls(dataset)
     price = opt_price_sim(
         strike,
         maturity_yrs,

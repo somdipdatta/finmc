@@ -11,7 +11,7 @@ from finmc.utils.assets import Discounter
 
 # Define a class for the state of a single asset HullWhite MC process
 class HullWhiteMC(MCFixedStep):
-    def __init__(self, dataset):
+    def reset(self, dataset):
         self.shape = dataset["MC"]["PATHS"]
         self.timestep = dataset["MC"]["TIMESTEP"]
 
@@ -61,8 +61,12 @@ class HullWhiteMC(MCFixedStep):
         self.cur_time = new_time
 
         np.multiply(self.df_vec, np.exp(-self.r_vec * dt), out=self.df_vec)
-        # np.exp(-self.r_vec * dt)  # return the discount factor
 
     def get_df(self):
         """Return the discount factor at the current time."""
         return self.df_vec  # discount factor
+
+    def get_value(self, unit):
+        """Return the value of the unit at the current time."""
+        if unit == "r":  # ad-hoc for now, convention to be reviewed
+            return self.r_vec

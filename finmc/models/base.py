@@ -10,6 +10,14 @@ class MCBase(ABC):
 
     stats: dict = {}
 
+    def __init__(self, dataset: dict) -> None:
+        self.reset(dataset)
+
+    @abstractmethod
+    def reset(self, dataset: dict):
+        """Reset the state of the model."""
+        ...
+
     def set_stat(self, key: str, val):
         self.stats[key] = val
 
@@ -30,7 +38,7 @@ class MCBase(ABC):
         ...
 
 
-class MCFixedStep(ABC):
+class MCFixedStep(MCBase):
     def advance(self, new_time):
         while new_time > self.cur_time + self.timestep:
             self.advance_step(self.cur_time + self.timestep)

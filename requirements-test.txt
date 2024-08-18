@@ -11,7 +11,7 @@ mkdocstrings
 mkdocstrings-python
 mkdocs-material
 line-profiler
-plotly
+matplotlib
 nbformat
 nbmake
 nb-clean

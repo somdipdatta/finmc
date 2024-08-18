@@ -9,7 +9,7 @@ from finmc.utils.assets import Discounter, Forwards
 
 # Define a class for the state of a single asset BS Local Vol MC process
 class LVMC(MCFixedStep):
-    def __init__(self, dataset):
+    def reset(self, dataset):
         # fetch the model parameters from the dataset
         self.n = dataset["MC"]["PATHS"]
         self.asset = dataset["LV"]["ASSET"]
