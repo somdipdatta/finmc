@@ -7,6 +7,45 @@ from finmc.models.base import MCFixedStep
 from finmc.utils.assets import Discounter, Forwards
 
 
+# Define a single asset Black Scholes process with a flat volatility
+class BSMC(MCFixedStep):
+    def reset(self, dataset):
+        # fetch the model parameters from the dataset
+        self.n = dataset["MC"]["PATHS"]
+        self.timestep = dataset["MC"]["TIMESTEP"]
+
+        self.asset = dataset["LV"]["ASSET"]
+        self.asset_fwd = Forwards(dataset["ASSETS"][self.asset])
+        self.spot = self.asset_fwd.forward(0)
+        self.vol = dataset["BS"]["VOL"]
+        self.discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
+
+        # Initialize rng and any arrays
+        self.rng = Generator(SFC64(dataset["MC"].get("SEED")))
+        self.x_vec = np.zeros(self.n)  # process x (log stock)
+
+        self.cur_time = 0
+
+    def advance_step(self, new_time):
+        """Update x_vec in place when we move simulation by time dt."""
+
+        dt = new_time - self.cur_time
+        fwd_rate = self.asset_fwd.rate(new_time, self.cur_time)
+
+        dz_vec = self.rng.standard_normal(self.n) * sqrt(dt) * self.vol
+        self.x_vec += (fwd_rate - self.vol * self.vol / 2.0) * dt + dz_vec
+
+        self.cur_time = new_time
+
+    def get_value(self, unit):
+        """Return the value of the modeled asset at the current time."""
+        if unit == self.asset:
+            return self.spot * np.exp(self.x_vec)
+
+    def get_df(self):
+        return self.discounter.discount(self.cur_time)
+
+
 # Define a class for the state of a single asset BS Local Vol MC process
 class LVMC(MCFixedStep):
     def reset(self, dataset):

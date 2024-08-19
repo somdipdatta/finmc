@@ -3,7 +3,7 @@
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
 
-from finmc.models.localvol import LVMC
+from finmc.models.localvol import BSMC, LVMC
 
 
 # Description: datasets for the LVMC model.
@@ -88,3 +88,10 @@ def data_lvmc_fn():
     dataset["LV"]["VOL"] = _local_vol
 
     return model_cls, dataset, other
+
+
+def data_bsmc():
+    """Test when vol is a RegularGridInterpolator."""
+    _, dataset, other = data_lvmc()
+
+    return BSMC, dataset, other

@@ -9,6 +9,7 @@ from pytest import approx
 from finmc.calc.option import opt_price_sim
 from finmc.utils.assets import Discounter, Forwards
 from tests.localvol.dataset import (
+    data_bsmc,
     data_lvmc,
     data_lvmc_fn,
     data_lvmc_grid,
@@ -19,6 +20,7 @@ from tests.localvol.helpers import opt_price_bs
 # datasets for all models that can price a vanilla option.
 @pytest.fixture(
     params=[
+        data_bsmc,
         data_lvmc,
         data_lvmc_fn,
         data_lvmc_grid,

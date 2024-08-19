@@ -20,23 +20,23 @@ def data(request):
     return request.param()
 
 
-def test_zcb(data):
+@pytest.mark.parametrize("maturity", [0.1, 1.0, 3.0, 10.0])
+def test_zcb(data, maturity):
     """Test the price of a zero coupon bond."""
 
     model_cls, dataset, _ = data
 
-    for maturity in [0.1, 1.0, 3.0, 10.0]:  # years
-        # Simulated Price
-        model = model_cls(dataset)
-        model.advance(maturity)
-        price = model.get_df().mean()
+    # Simulated Price
+    model = model_cls(dataset)
+    model.advance(maturity)
+    price = model.get_df().mean()
 
-        # Get closed form price
-        discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
-        expected_price = discounter.discount(maturity)
+    # Get closed form price
+    discounter = Discounter(dataset["ASSETS"][dataset["BASE"]])
+    expected_price = discounter.discount(maturity)
 
-        error = price - expected_price
-        contract = f"ZCB {maturity:4.2f}"
-        assert error == approx(0.0, abs=1e-3)
+    error = price - expected_price
+    contract = f"ZCB {maturity:4.2f}"
+    assert error == approx(0.0, abs=1e-3)
 
-        print(f"{contract}: {price:11.6f} {expected_price:11.6f} {error:9.6f}")
+    print(f"{contract}: {price:11.6f} {expected_price:11.6f} {error:9.6f}")
