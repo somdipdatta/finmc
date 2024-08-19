@@ -4,6 +4,13 @@
 
 Coming Soon.
 
+<table>
+<tr>
+<td> <img src="images/impliedvol.png" alt="implied vol"/> </td>
+<td> <img src="images/rate_mc.png" alt="rate mc"/> </td>
+</tr>
+</table>
+
 ## Install it from PyPI
 
 ```bash

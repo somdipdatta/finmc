@@ -22,7 +22,7 @@ def plot_asset(
         quantiles[:, i] = np.quantile(spots, q_levels)
         samples[:, i] = spots[sample_idxs]
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(6, 6))
 
     for i in range(num_levels >> 1):
         ax.fill_between(
