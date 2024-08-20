@@ -2,7 +2,9 @@
 
 [![CI](https://github.com/somdipdatta/finmc/actions/workflows/main.yml/badge.svg)](https://github.com/somdipdatta/finmc/actions/workflows/main.yml)
 
-Coming Soon.
+This package contains Monte-Carlo implementations of many financial models derived from a common interface class. This interface allows computation of instruments with european, and american payoffs, as well as path dependent calculations.
+
+More details coming soon.
 
 <table>
 <tr>
