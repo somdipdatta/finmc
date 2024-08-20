@@ -8,8 +8,8 @@ More details coming soon.
 
 <table>
 <tr>
-<td> <img src="images/impliedvol.png" alt="implied vol"/> </td>
-<td> <img src="images/rate_mc.png" alt="rate mc"/> </td>
+<td> <img src="https://raw.githubusercontent.com/somdipdatta/finmc/main/images/impliedvol.png" alt="implied vol"/> </td>
+<td> <img src="https://raw.githubusercontent.com/somdipdatta/finmc/main/images/rate_mc.png" alt="rate mc"/> </td>
 </tr>
 </table>
 
