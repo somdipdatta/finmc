@@ -4,7 +4,7 @@ Utility to calculate implied volatility surface from a MC Simulation model.
 
 import numpy as np
 
-from finmc.calc.bs import find_vol
+from finmc.utils.bs import impliedvol
 
 
 def iv_surface_sim(
@@ -36,7 +36,7 @@ def iv_surface_sim(
 
         # calculate implied vols
         iv_mat[i, :] = [
-            find_vol(p, fwd, k, exp, ic)
+            impliedvol(p, fwd, k, exp, ic)
             for p, k, ic in zip(prices, strikes, is_call)
         ]
 
@@ -44,7 +44,7 @@ def iv_surface_sim(
         atm_call = np.maximum(expiration_spots - fwd, 0).mean()
         # calculate implied vols and fwds
         fwds.append(fwd)
-        iv_atm.append(find_vol(atm_call, fwd, fwd, exp, True))
+        iv_atm.append(impliedvol(atm_call, fwd, fwd, exp, True))
     return iv_mat, np.array(iv_atm), np.array(fwds)
 
 
