@@ -3,7 +3,7 @@
 import pytest
 from pytest import approx
 
-from finmc.calc.option import opt_price_sim
+from finmc.calc.option import opt_price_mc
 from finmc.utils.assets import Discounter, Forwards
 from tests.heston.dataset import data_heston_kruse
 from tests.heston.helpers import opt_price_heston
@@ -27,7 +27,7 @@ def test_call(data, maturity, strike_x):
 
     model = model_cls(dataset)
 
-    price = opt_price_sim(
+    price = opt_price_mc(
         strike,
         maturity,
         "Call",

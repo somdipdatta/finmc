@@ -4,7 +4,6 @@ theme:
   palette:
     # Palette toggle for dark mode
     - scheme: slate
-      primary: brown
 
       toggle:
         icon: material/brightness-4
@@ -12,14 +11,12 @@ theme:
 
     # Palette toggle for light mode
     - scheme: default
-      primary: brown
 
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
 
 
-  logo: assets/logo.png
   features:
     - navigation.tabs
 
@@ -34,6 +31,7 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - md_in_html
 
 plugins:
   - search
@@ -46,11 +44,24 @@ plugins:
             members_order: source
             show_root_toc_entry: false
 
-extra_css:
-  - stylesheets/extra.css
+# extra_css:
+#   - stylesheets/extra.css
 
 extra_javascript:
   - javascripts/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
+nav:
+  - 'Home':
+    - 'index.md'
+    - 'dataset.md'
+    - 'rates.md'
+    - 'forwards.md'
+    - 'utilities.md'
+    - 'calculators.md'
+  - 'Models':
+    - 'models/api.md'
+    - 'models/heston.md'
+    - 'models/hullwhite.md'
+    - 'models/localvol.md'

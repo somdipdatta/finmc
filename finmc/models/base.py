@@ -3,10 +3,8 @@
 from abc import ABC, abstractmethod
 
 
-# Define Base Class for State Object for MC Models
-# Todo add the abstract methods and what else is expected from this class.
 class MCBase(ABC):
-    """Class to maintain the state of a single asset MC process."""
+    """Base class for a Monte-Carlo process."""
 
     stats: dict = {}
 
@@ -15,7 +13,8 @@ class MCBase(ABC):
 
     @abstractmethod
     def reset(self, dataset: dict):
-        """Reset the state of the model."""
+        """The derived class must implement this method to reset the state of the model
+        to time zero."""
         ...
 
     def set_stat(self, key: str, val):
@@ -34,11 +33,15 @@ class MCBase(ABC):
 
     @abstractmethod
     def advance(self, new_time: float):
-        """Advance the model to a new time. It might require multiple time steps."""
+        """The derived class must implement this method to advance the state of the model
+        to a new time. The model may do so in multiple time steps."""
         ...
 
 
 class MCFixedStep(MCBase):
+    """A Monte-Carlo process which breaks down the 'advance' step into fixed time steps
+    specified by the TIMESTEP parameter."""
+
     def advance(self, new_time):
         while new_time > self.cur_time + self.timestep:
             self.advance_step(self.cur_time + self.timestep)
@@ -47,5 +50,6 @@ class MCFixedStep(MCBase):
 
     @abstractmethod
     def advance_step(self, new_time: float):
-        """Advance the model with a single time step."""
+        """The derived class must implement this method, which advances the model by a timestep equal to or
+        less than the TIMESTEP parameter."""
         ...

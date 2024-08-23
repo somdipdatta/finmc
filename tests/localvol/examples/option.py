@@ -1,5 +1,5 @@
 # Description: Run MSFD and LVMC models with a vanilla option contract.
-from finmc.calc.option import opt_price_sim
+from finmc.calc.option import opt_price_mc
 from tests.localvol.dataset import data_lvmc_fn, data_lvmc_grid
 
 
@@ -18,7 +18,7 @@ def run_model(type="grid"):
 
     # get price from timetable
     model = model_cls(dataset)
-    price = opt_price_sim(
+    price = opt_price_mc(
         strike,
         1 / 12,
         "Call",

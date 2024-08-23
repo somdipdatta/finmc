@@ -1,14 +1,34 @@
+"""
+Utility to calculate prices of european contracts from a MC Simulation model.
+"""
+
 import numpy as np
 
+from finmc.models.base import MCBase
 
-def opt_price_sim(
-    strike,
-    maturity,  # in years
-    option_type,  # "Call" or "Put"
-    asset_name,
-    model,
-):
-    """Calculate the price of a Vanilla European Option using MC Simulation."""
+
+def opt_price_mc(
+    strike: float,
+    maturity: float,
+    option_type: str,
+    asset_name: str,
+    model: MCBase,
+) -> float:
+    """Calculate the price of a Vanilla European Option using MC Simulation.
+
+    Args:
+        strike: The strike price of the option.
+        maturity: The time to maturity of the option in years.
+        option_type: The type of the option. Either "Call" or "Put".
+        asset_name: The name of the asset.
+        model: The model used to simulate the asset price.
+
+    Returns:
+        The price of the option.
+
+    Examples:
+        price = opt_price_mc(K, T, "Call", "SPX", model)
+    """
 
     model.advance(maturity)
     expiration_spots = model.get_value(asset_name)
@@ -42,7 +62,7 @@ if __name__ == "__main__":
     }
 
     model = LVMC(dataset)
-    price = opt_price_sim(
+    price = opt_price_mc(
         strike=2900,
         maturity=1 / 12,
         option_type="Call",

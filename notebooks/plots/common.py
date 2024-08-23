@@ -22,7 +22,7 @@ def plot_asset(
         quantiles[:, i] = np.quantile(spots, q_levels)
         samples[:, i] = spots[sample_idxs]
 
-    fig, ax = plt.subplots(figsize=(6, 6))
+    fig, ax = plt.subplots(figsize=(8, 3))
 
     for i in range(num_levels >> 1):
         ax.fill_between(
@@ -34,9 +34,10 @@ def plot_asset(
             edgecolor="none",
         )
     for sample in samples:
-        ax.plot(times, sample, label="Sample Path")
+        ax.plot(times, sample)
     ax.set_xlabel("Maturity (years)")
     ax.set_ylabel(asset_name)
+    ax.tick_params(axis="x", direction="in", pad=-15)
     plt.show()
 
 

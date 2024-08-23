@@ -4,15 +4,31 @@ Utility to calculate implied volatility surface from a MC Simulation model.
 
 import numpy as np
 
+from finmc.models.base import MCBase
 from finmc.utils.bs import impliedvol
 
 
-def iv_surface_sim(
+def iv_surface_mc(
     strikes,
     expirations,  # in years, increasing order
     asset_name: str,
-    model,
+    model: MCBase,
 ):
+    """Calculate the implied volatility surface using MC Simulation.
+
+    Args:
+        strikes: The strikes of the options.
+        expirations: The expirations of the options in years.
+        asset_name: The name of the asset.
+        model: The model used to simulate the asset price.
+
+    Returns:
+        A tuple containing the implied volatility surface, the ATM volatilities, and the forward prices.
+
+    Examples:
+        surface, atm_vols, fwds = iv_surface_mc(Ks, Ts, "SPX", model)
+    """
+
     iv_mat = np.zeros((len(expirations), len(strikes)))
     iv_atm = []
     fwds = []
@@ -71,7 +87,7 @@ if __name__ == "__main__":
     model = LVMC(dataset)
     strikes = np.linspace(2900, 3100, 3)
     expirations = [1 / 12, 1 / 6, 1 / 4, 1 / 2, 1]
-    surface, atm_vols, fwds = iv_surface_sim(
+    surface, atm_vols, fwds = iv_surface_mc(
         strikes,
         expirations,
         asset_name="SPX",

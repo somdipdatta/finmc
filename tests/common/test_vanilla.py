@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from pytest import approx
 
-from finmc.calc.option import opt_price_sim
+from finmc.calc.option import opt_price_mc
 from finmc.utils.assets import Discounter, Forwards
 from finmc.utils.bs import opt_price
 from tests.localvol.dataset import (
@@ -43,7 +43,7 @@ def test_call(data, maturity, strike_x):
     maturity_yrs = maturity / 12
 
     model = model_cls(dataset)
-    price = opt_price_sim(
+    price = opt_price_mc(
         strike,
         maturity_yrs,
         "Call",
